@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>loadingPage.qml</file>
+        <file>dashPage.qml</file>
+        <file>settingsPage.qml</file>
+        <file>Navbar.qml</file>
+        <file>NavButton.qml</file>
+        <file>clientsPage.qml</file>
+        <file>softwarePage.qml</file>
+        <file>PageView.qml</file>
+    </qresource>
+</RCC>
