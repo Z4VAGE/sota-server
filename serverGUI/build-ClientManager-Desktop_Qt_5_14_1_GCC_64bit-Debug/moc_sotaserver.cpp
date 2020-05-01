@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_SOTAserver_t {
-    QByteArrayData data[5];
-    char stringdata0[30];
+    QByteArrayData data[12];
+    char stringdata0[98];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -33,13 +33,22 @@ struct qt_meta_stringdata_SOTAserver_t {
 static const qt_meta_stringdata_SOTAserver_t qt_meta_stringdata_SOTAserver = {
     {
 QT_MOC_LITERAL(0, 0, 10), // "SOTAserver"
-QT_MOC_LITERAL(1, 11, 4), // "test"
-QT_MOC_LITERAL(2, 16, 0), // ""
-QT_MOC_LITERAL(3, 17, 8), // "gen_rand"
-QT_MOC_LITERAL(4, 26, 3) // "len"
+QT_MOC_LITERAL(1, 11, 5), // "getOS"
+QT_MOC_LITERAL(2, 17, 0), // ""
+QT_MOC_LITERAL(3, 18, 7), // "getHost"
+QT_MOC_LITERAL(4, 26, 15), // "getArchitecture"
+QT_MOC_LITERAL(5, 42, 5), // "getIP"
+QT_MOC_LITERAL(6, 48, 9), // "getStatus"
+QT_MOC_LITERAL(7, 58, 7), // "getUser"
+QT_MOC_LITERAL(8, 66, 10), // "runCommand"
+QT_MOC_LITERAL(9, 77, 7), // "command"
+QT_MOC_LITERAL(10, 85, 8), // "gen_rand"
+QT_MOC_LITERAL(11, 94, 3) // "len"
 
     },
-    "SOTAserver\0test\0\0gen_rand\0len"
+    "SOTAserver\0getOS\0\0getHost\0getArchitecture\0"
+    "getIP\0getStatus\0getUser\0runCommand\0"
+    "command\0gen_rand\0len"
 };
 #undef QT_MOC_LITERAL
 
@@ -49,7 +58,7 @@ static const uint qt_meta_data_SOTAserver[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-       2,   14, // methods
+       8,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -57,12 +66,24 @@ static const uint qt_meta_data_SOTAserver[] = {
        0,       // signalCount
 
  // methods: name, argc, parameters, tag, flags
-       1,    0,   24,    2, 0x02 /* Public */,
-       3,    1,   25,    2, 0x02 /* Public */,
+       1,    0,   54,    2, 0x02 /* Public */,
+       3,    0,   55,    2, 0x02 /* Public */,
+       4,    0,   56,    2, 0x02 /* Public */,
+       5,    0,   57,    2, 0x02 /* Public */,
+       6,    0,   58,    2, 0x02 /* Public */,
+       7,    0,   59,    2, 0x02 /* Public */,
+       8,    1,   60,    2, 0x02 /* Public */,
+      10,    1,   63,    2, 0x02 /* Public */,
 
  // methods: parameters
     QMetaType::QString,
-    QMetaType::Void, QMetaType::Int,    4,
+    QMetaType::QString,
+    QMetaType::QString,
+    QMetaType::QString,
+    QMetaType::QString,
+    QMetaType::QString,
+    QMetaType::QString, QMetaType::QString,    9,
+    QMetaType::QString, QMetaType::Int,   11,
 
        0        // eod
 };
@@ -73,9 +94,22 @@ void SOTAserver::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         auto *_t = static_cast<SOTAserver *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: { QString _r = _t->test();
+        case 0: { QString _r = _t->getOS();
             if (_a[0]) *reinterpret_cast< QString*>(_a[0]) = std::move(_r); }  break;
-        case 1: _t->gen_rand((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 1: { QString _r = _t->getHost();
+            if (_a[0]) *reinterpret_cast< QString*>(_a[0]) = std::move(_r); }  break;
+        case 2: { QString _r = _t->getArchitecture();
+            if (_a[0]) *reinterpret_cast< QString*>(_a[0]) = std::move(_r); }  break;
+        case 3: { QString _r = _t->getIP();
+            if (_a[0]) *reinterpret_cast< QString*>(_a[0]) = std::move(_r); }  break;
+        case 4: { QString _r = _t->getStatus();
+            if (_a[0]) *reinterpret_cast< QString*>(_a[0]) = std::move(_r); }  break;
+        case 5: { QString _r = _t->getUser();
+            if (_a[0]) *reinterpret_cast< QString*>(_a[0]) = std::move(_r); }  break;
+        case 6: { QString _r = _t->runCommand((*reinterpret_cast< QString(*)>(_a[1])));
+            if (_a[0]) *reinterpret_cast< QString*>(_a[0]) = std::move(_r); }  break;
+        case 7: { QString _r = _t->gen_rand((*reinterpret_cast< int(*)>(_a[1])));
+            if (_a[0]) *reinterpret_cast< QString*>(_a[0]) = std::move(_r); }  break;
         default: ;
         }
     }
@@ -110,13 +144,13 @@ int SOTAserver::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 2)
+        if (_id < 8)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 2;
+        _id -= 8;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 2)
+        if (_id < 8)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 2;
+        _id -= 8;
     }
     return _id;
 }

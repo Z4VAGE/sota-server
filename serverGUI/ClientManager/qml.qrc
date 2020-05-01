@@ -9,5 +9,7 @@
         <file>clientsPage.qml</file>
         <file>softwarePage.qml</file>
         <file>PageView.qml</file>
+        <file>NiceButton.qml</file>
+        <file>RowButton.qml</file>
     </qresource>
 </RCC>

@@ -1,4 +1,7 @@
 QT += quick
+QT += sql
+
+QTPLUGIN += QSQLITE
 
 CONFIG += c++11
 
@@ -15,7 +18,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        setupdb.cpp \
         sotadb.cpp \
         sotaserver.cpp
 
@@ -33,6 +35,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    client.h \
+    software.h \
     sotadb.h \
-    sotaserver.h \
-    sqlite3.h
+    sotaserver.h

@@ -11,7 +11,7 @@ Item {
     StackView {
         id: pageView
         anchors.fill: parent
-        initialItem: Qt.resolvedUrl("qrc:/dashPage.qml")
+        initialItem: Qt.resolvedUrl("qrc:/loadingPage.qml")
 
         replaceEnter: Transition {
             PropertyAnimation {

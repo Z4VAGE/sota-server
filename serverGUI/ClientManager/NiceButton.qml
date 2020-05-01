@@ -7,21 +7,23 @@ Item {
     property string txt
     property color primaryColor: "#1e2124"
     property color secondaryColor: "#42464d"
+    property color color3: "#282b30"
+    property color color4: "#7a7d82"
     property color trim1Color: "#5ac18e"
     property color trim2Color: "#5ac1c1"
     property color textColor: "white"
-    property int radius: 0
-    property int active: 0
+    property int fontsize: 20
+    property int btnRadius: 0
 
-    signal selected()
+    signal clicked()
 
     Rectangle {
         id: body
         width: parent.width
         height: parent.height
-        radius: radius
+        radius: btnRadius
         anchors.fill: parent
-        color: root.active ? root.trim1Color : root.primaryColor
+        color: root.secondaryColor
 
         property color lastcolor: "#282b30"
 
@@ -29,37 +31,35 @@ Item {
             id: btnText
             text: root.txt
             style: Text.Normal
-            font.pointSize: 20
+            font.pointSize: fontsize
             color: root.textColor
             anchors.fill: parent
-            anchors.leftMargin: 15
             verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
         }
 
         MouseArea {
             id: area
             anchors.fill: parent
             hoverEnabled: true
-            onClicked: {
-                root.active = 1
-                body.color = root.trim1Color
-                root.selected()
+            onPressed: {
+                flashon.start()
+            }
+            onReleased: {
+                flashoff.start()
+                root.clicked()
             }
             onEntered: {
-                body.color = root.active ? root.trim2Color : root.secondaryColor
+                body.color = color4
             }
             onExited: {
-                body.color = root.active ? root.trim1Color : root.primaryColor
+                body.color = secondaryColor
             }
         } // end MouseArea
 
+       PropertyAnimation {id: flashon; target: body; properties: "color"; to: trim1Color; duration: 50}
+       PropertyAnimation {id: flashoff; target: body; properties: "color"; to: secondaryColor; duration: 50}
+
     } // end body
-
-    onActiveChanged: body.color = (root.active === 1) ? root.trim1Color : root.primaryColor
-
-    function reset() {
-        body.color = root.primaryColor
-        root.active = 0
-    }
 
 } // end root

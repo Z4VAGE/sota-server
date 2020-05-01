@@ -14,10 +14,10 @@ EQ            = =
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DQT_DEPRECATED_WARNINGS -DQT_QML_DEBUG -DQT_QUICK_LIB -DQT_GUI_LIB -DQT_QMLMODELS_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB
+DEFINES       = -DQT_DEPRECATED_WARNINGS -DQT_QML_DEBUG -DQT_QUICK_LIB -DQT_GUI_LIB -DQT_QMLMODELS_LIB -DQT_QML_LIB -DQT_NETWORK_LIB -DQT_SQL_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -g -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -g -std=gnu++11 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I../ClientManager -I. -I../../../../garrett/Qt/5.14.1/gcc_64/include -I../../../../garrett/Qt/5.14.1/gcc_64/include/QtQuick -I../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui -I../../../../garrett/Qt/5.14.1/gcc_64/include/QtQmlModels -I../../../../garrett/Qt/5.14.1/gcc_64/include/QtQml -I../../../../garrett/Qt/5.14.1/gcc_64/include/QtNetwork -I../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore -I. -isystem /usr/include/libdrm -I../../../../garrett/Qt/5.14.1/gcc_64/mkspecs/linux-g++
+INCPATH       = -I../ClientManager -I. -I../../../../garrett/Qt/5.14.1/gcc_64/include -I../../../../garrett/Qt/5.14.1/gcc_64/include/QtQuick -I../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui -I../../../../garrett/Qt/5.14.1/gcc_64/include/QtQmlModels -I../../../../garrett/Qt/5.14.1/gcc_64/include/QtQml -I../../../../garrett/Qt/5.14.1/gcc_64/include/QtNetwork -I../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql -I../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore -I. -isystem /usr/include/libdrm -I../../../../garrett/Qt/5.14.1/gcc_64/mkspecs/linux-g++
 QMAKE         = /home/garrett/Qt/5.14.1/gcc_64/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -40,7 +40,7 @@ DISTNAME      = ClientManager1.0.0
 DISTDIR = /home/serveradmin/sota-server/serverGUI/build-ClientManager-Desktop_Qt_5_14_1_GCC_64bit-Debug/.tmp/ClientManager1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-rpath,/home/garrett/Qt/5.14.1/gcc_64/lib
-LIBS          = $(SUBLIBS) /home/garrett/Qt/5.14.1/gcc_64/lib/libQt5Quick.so /home/garrett/Qt/5.14.1/gcc_64/lib/libQt5Gui.so /home/garrett/Qt/5.14.1/gcc_64/lib/libQt5QmlModels.so /home/garrett/Qt/5.14.1/gcc_64/lib/libQt5Qml.so /home/garrett/Qt/5.14.1/gcc_64/lib/libQt5Network.so /home/garrett/Qt/5.14.1/gcc_64/lib/libQt5Core.so -lGL -lpthread   
+LIBS          = $(SUBLIBS) /home/garrett/Qt/5.14.1/gcc_64/lib/libQt5Quick.so /home/garrett/Qt/5.14.1/gcc_64/lib/libQt5Gui.so /home/garrett/Qt/5.14.1/gcc_64/lib/libQt5QmlModels.so /home/garrett/Qt/5.14.1/gcc_64/lib/libQt5Qml.so /home/garrett/Qt/5.14.1/gcc_64/lib/libQt5Network.so /home/garrett/Qt/5.14.1/gcc_64/lib/libQt5Sql.so /home/garrett/Qt/5.14.1/gcc_64/lib/libQt5Core.so -lGL -lpthread   
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -53,16 +53,18 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../ClientManager/main.cpp \
-		../ClientManager/setupdb.cpp \
 		../ClientManager/sotadb.cpp \
 		../ClientManager/sotaserver.cpp qrc_qml.cpp \
+		moc_client.cpp \
+		moc_software.cpp \
 		moc_sotadb.cpp \
 		moc_sotaserver.cpp
 OBJECTS       = main.o \
-		setupdb.o \
 		sotadb.o \
 		sotaserver.o \
 		qrc_qml.o \
+		moc_client.o \
+		moc_software.o \
 		moc_sotadb.o \
 		moc_sotaserver.o
 DIST          = ../../../../garrett/Qt/5.14.1/gcc_64/mkspecs/features/spec_pre.prf \
@@ -275,10 +277,10 @@ DIST          = ../../../../garrett/Qt/5.14.1/gcc_64/mkspecs/features/spec_pre.p
 		../../../../garrett/Qt/5.14.1/gcc_64/mkspecs/features/exceptions.prf \
 		../../../../garrett/Qt/5.14.1/gcc_64/mkspecs/features/yacc.prf \
 		../../../../garrett/Qt/5.14.1/gcc_64/mkspecs/features/lex.prf \
-		../ClientManager/ClientManager.pro ../ClientManager/sotadb.h \
-		../ClientManager/sotaserver.h \
-		../ClientManager/sqlite3.h ../ClientManager/main.cpp \
-		../ClientManager/setupdb.cpp \
+		../ClientManager/ClientManager.pro ../ClientManager/client.h \
+		../ClientManager/software.h \
+		../ClientManager/sotadb.h \
+		../ClientManager/sotaserver.h ../ClientManager/main.cpp \
 		../ClientManager/sotadb.cpp \
 		../ClientManager/sotaserver.cpp
 QMAKE_TARGET  = ClientManager
@@ -733,8 +735,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../ClientManager/qml.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents ../../../../garrett/Qt/5.14.1/gcc_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../ClientManager/sotadb.h ../ClientManager/sotaserver.h ../ClientManager/sqlite3.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../ClientManager/main.cpp ../ClientManager/setupdb.cpp ../ClientManager/sotadb.cpp ../ClientManager/sotaserver.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../ClientManager/client.h ../ClientManager/software.h ../ClientManager/sotadb.h ../ClientManager/sotaserver.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../ClientManager/main.cpp ../ClientManager/sotadb.cpp ../ClientManager/sotaserver.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -768,6 +770,8 @@ qrc_qml.cpp: ../ClientManager/qml.qrc \
 		../ClientManager/settingsPage.qml \
 		../ClientManager/clientsPage.qml \
 		../ClientManager/PageView.qml \
+		../ClientManager/NiceButton.qml \
+		../ClientManager/RowButton.qml \
 		../ClientManager/NavButton.qml \
 		../ClientManager/softwarePage.qml \
 		../ClientManager/loadingPage.qml \
@@ -780,9 +784,125 @@ compiler_moc_predefs_clean:
 moc_predefs.h: ../../../../garrett/Qt/5.14.1/gcc_64/mkspecs/features/data/dummy.cpp
 	g++ -pipe -g -std=gnu++11 -Wall -Wextra -dM -E -o moc_predefs.h ../../../../garrett/Qt/5.14.1/gcc_64/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_sotadb.cpp moc_sotaserver.cpp
+compiler_moc_header_make_all: moc_client.cpp moc_software.cpp moc_sotadb.cpp moc_sotaserver.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_sotadb.cpp moc_sotaserver.cpp
+	-$(DEL_FILE) moc_client.cpp moc_software.cpp moc_sotadb.cpp moc_sotaserver.cpp
+moc_client.cpp: ../ClientManager/client.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/QObject \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qobject.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qobjectdefs.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qnamespace.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qglobal.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qconfig-bootstrapped.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qconfig.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qtcore-config.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qsystemdetection.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qprocessordetection.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qcompilerdetection.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qtypeinfo.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qsysinfo.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qlogging.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qflags.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qatomic.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qbasicatomic.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qgenericatomic.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qatomic_cxx11.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qatomic_msvc.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qglobalstatic.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qmutex.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qnumeric.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qversiontagging.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qstring.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qchar.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qbytearray.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qrefcount.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qarraydata.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qstringliteral.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qstringalgorithms.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qstringview.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qstringbuilder.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qlist.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qalgorithms.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qiterator.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qhashfunctions.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qpair.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qvector.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qcontainertools_impl.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qpoint.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qbytearraylist.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qstringlist.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qregexp.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qstringmatcher.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qcoreevent.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qscopedpointer.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qmetatype.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qvarlengtharray.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qcontainerfwd.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qobject_impl.h \
+		moc_predefs.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/bin/moc
+	/home/garrett/Qt/5.14.1/gcc_64/bin/moc $(DEFINES) --include /home/serveradmin/sota-server/serverGUI/build-ClientManager-Desktop_Qt_5_14_1_GCC_64bit-Debug/moc_predefs.h -I/home/garrett/Qt/5.14.1/gcc_64/mkspecs/linux-g++ -I/home/serveradmin/sota-server/serverGUI/ClientManager -I/home/garrett/Qt/5.14.1/gcc_64/include -I/home/garrett/Qt/5.14.1/gcc_64/include/QtQuick -I/home/garrett/Qt/5.14.1/gcc_64/include/QtGui -I/home/garrett/Qt/5.14.1/gcc_64/include/QtQmlModels -I/home/garrett/Qt/5.14.1/gcc_64/include/QtQml -I/home/garrett/Qt/5.14.1/gcc_64/include/QtNetwork -I/home/garrett/Qt/5.14.1/gcc_64/include/QtSql -I/home/garrett/Qt/5.14.1/gcc_64/include/QtCore -I. -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../ClientManager/client.h -o moc_client.cpp
+
+moc_software.cpp: ../ClientManager/software.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/QObject \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qobject.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qobjectdefs.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qnamespace.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qglobal.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qconfig-bootstrapped.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qconfig.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qtcore-config.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qsystemdetection.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qprocessordetection.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qcompilerdetection.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qtypeinfo.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qsysinfo.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qlogging.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qflags.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qatomic.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qbasicatomic.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qgenericatomic.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qatomic_cxx11.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qatomic_msvc.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qglobalstatic.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qmutex.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qnumeric.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qversiontagging.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qstring.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qchar.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qbytearray.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qrefcount.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qarraydata.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qstringliteral.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qstringalgorithms.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qstringview.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qstringbuilder.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qlist.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qalgorithms.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qiterator.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qhashfunctions.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qpair.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qvector.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qcontainertools_impl.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qpoint.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qbytearraylist.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qstringlist.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qregexp.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qstringmatcher.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qcoreevent.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qscopedpointer.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qmetatype.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qvarlengtharray.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qcontainerfwd.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qobject_impl.h \
+		moc_predefs.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/bin/moc
+	/home/garrett/Qt/5.14.1/gcc_64/bin/moc $(DEFINES) --include /home/serveradmin/sota-server/serverGUI/build-ClientManager-Desktop_Qt_5_14_1_GCC_64bit-Debug/moc_predefs.h -I/home/garrett/Qt/5.14.1/gcc_64/mkspecs/linux-g++ -I/home/serveradmin/sota-server/serverGUI/ClientManager -I/home/garrett/Qt/5.14.1/gcc_64/include -I/home/garrett/Qt/5.14.1/gcc_64/include/QtQuick -I/home/garrett/Qt/5.14.1/gcc_64/include/QtGui -I/home/garrett/Qt/5.14.1/gcc_64/include/QtQmlModels -I/home/garrett/Qt/5.14.1/gcc_64/include/QtQml -I/home/garrett/Qt/5.14.1/gcc_64/include/QtNetwork -I/home/garrett/Qt/5.14.1/gcc_64/include/QtSql -I/home/garrett/Qt/5.14.1/gcc_64/include/QtCore -I. -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../ClientManager/software.h -o moc_software.cpp
+
 moc_sotadb.cpp: ../ClientManager/sotadb.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/QObject \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qobject.h \
@@ -850,10 +970,20 @@ moc_sotadb.cpp: ../ClientManager/sotadb.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qcontiguouscache.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qsharedpointer.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qsharedpointer_impl.h \
-		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/QPoint \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/QSqlDatabase \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/qsqldatabase.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/qtsqlglobal.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/qtsql-config.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/QSqlDriver \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/qsqldriver.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/QSqlError \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/qsqlerror.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/QSqlQuery \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/qsqlquery.h \
+		../ClientManager/client.h \
 		moc_predefs.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/bin/moc
-	/home/garrett/Qt/5.14.1/gcc_64/bin/moc $(DEFINES) --include /home/serveradmin/sota-server/serverGUI/build-ClientManager-Desktop_Qt_5_14_1_GCC_64bit-Debug/moc_predefs.h -I/home/garrett/Qt/5.14.1/gcc_64/mkspecs/linux-g++ -I/home/serveradmin/sota-server/serverGUI/ClientManager -I/home/garrett/Qt/5.14.1/gcc_64/include -I/home/garrett/Qt/5.14.1/gcc_64/include/QtQuick -I/home/garrett/Qt/5.14.1/gcc_64/include/QtGui -I/home/garrett/Qt/5.14.1/gcc_64/include/QtQmlModels -I/home/garrett/Qt/5.14.1/gcc_64/include/QtQml -I/home/garrett/Qt/5.14.1/gcc_64/include/QtNetwork -I/home/garrett/Qt/5.14.1/gcc_64/include/QtCore -I. -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../ClientManager/sotadb.h -o moc_sotadb.cpp
+	/home/garrett/Qt/5.14.1/gcc_64/bin/moc $(DEFINES) --include /home/serveradmin/sota-server/serverGUI/build-ClientManager-Desktop_Qt_5_14_1_GCC_64bit-Debug/moc_predefs.h -I/home/garrett/Qt/5.14.1/gcc_64/mkspecs/linux-g++ -I/home/serveradmin/sota-server/serverGUI/ClientManager -I/home/garrett/Qt/5.14.1/gcc_64/include -I/home/garrett/Qt/5.14.1/gcc_64/include/QtQuick -I/home/garrett/Qt/5.14.1/gcc_64/include/QtGui -I/home/garrett/Qt/5.14.1/gcc_64/include/QtQmlModels -I/home/garrett/Qt/5.14.1/gcc_64/include/QtQml -I/home/garrett/Qt/5.14.1/gcc_64/include/QtNetwork -I/home/garrett/Qt/5.14.1/gcc_64/include/QtSql -I/home/garrett/Qt/5.14.1/gcc_64/include/QtCore -I. -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../ClientManager/sotadb.h -o moc_sotadb.cpp
 
 moc_sotaserver.cpp: ../ClientManager/sotaserver.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/QObject \
@@ -923,9 +1053,10 @@ moc_sotaserver.cpp: ../ClientManager/sotaserver.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qsharedpointer.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qsharedpointer_impl.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/QPoint \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/QSysInfo \
 		moc_predefs.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/bin/moc
-	/home/garrett/Qt/5.14.1/gcc_64/bin/moc $(DEFINES) --include /home/serveradmin/sota-server/serverGUI/build-ClientManager-Desktop_Qt_5_14_1_GCC_64bit-Debug/moc_predefs.h -I/home/garrett/Qt/5.14.1/gcc_64/mkspecs/linux-g++ -I/home/serveradmin/sota-server/serverGUI/ClientManager -I/home/garrett/Qt/5.14.1/gcc_64/include -I/home/garrett/Qt/5.14.1/gcc_64/include/QtQuick -I/home/garrett/Qt/5.14.1/gcc_64/include/QtGui -I/home/garrett/Qt/5.14.1/gcc_64/include/QtQmlModels -I/home/garrett/Qt/5.14.1/gcc_64/include/QtQml -I/home/garrett/Qt/5.14.1/gcc_64/include/QtNetwork -I/home/garrett/Qt/5.14.1/gcc_64/include/QtCore -I. -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../ClientManager/sotaserver.h -o moc_sotaserver.cpp
+	/home/garrett/Qt/5.14.1/gcc_64/bin/moc $(DEFINES) --include /home/serveradmin/sota-server/serverGUI/build-ClientManager-Desktop_Qt_5_14_1_GCC_64bit-Debug/moc_predefs.h -I/home/garrett/Qt/5.14.1/gcc_64/mkspecs/linux-g++ -I/home/serveradmin/sota-server/serverGUI/ClientManager -I/home/garrett/Qt/5.14.1/gcc_64/include -I/home/garrett/Qt/5.14.1/gcc_64/include/QtQuick -I/home/garrett/Qt/5.14.1/gcc_64/include/QtGui -I/home/garrett/Qt/5.14.1/gcc_64/include/QtQmlModels -I/home/garrett/Qt/5.14.1/gcc_64/include/QtQml -I/home/garrett/Qt/5.14.1/gcc_64/include/QtNetwork -I/home/garrett/Qt/5.14.1/gcc_64/include/QtSql -I/home/garrett/Qt/5.14.1/gcc_64/include/QtCore -I. -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../ClientManager/sotaserver.h -o moc_sotaserver.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -1043,17 +1174,25 @@ main.o: ../ClientManager/main.cpp ../../../../garrett/Qt/5.14.1/gcc_64/include/Q
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/QObject \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/QDebug \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/QPoint \
-		../ClientManager/sotadb.h
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/QSysInfo \
+		../ClientManager/sotadb.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/QSqlDatabase \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/qsqldatabase.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/qtsqlglobal.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/qtsql-config.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/QSqlDriver \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/qsqldriver.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/QSqlError \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/qsqlerror.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/QSqlQuery \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/qsqlquery.h \
+		../ClientManager/client.h \
+		../ClientManager/software.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../ClientManager/main.cpp
 
-setupdb.o: ../ClientManager/setupdb.cpp 
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o setupdb.o ../ClientManager/setupdb.cpp
-
-sotadb.o: ../ClientManager/sotadb.cpp ../ClientManager/sotadb.h \
-		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/QObject \
-		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qobject.h \
-		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qobjectdefs.h \
-		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qnamespace.h \
+sotadb.o: ../ClientManager/sotadb.cpp ../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/QString \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qstring.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qchar.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qglobal.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qconfig-bootstrapped.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qconfig.h \
@@ -1075,40 +1214,68 @@ sotadb.o: ../ClientManager/sotadb.cpp ../ClientManager/sotadb.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qmutex.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qnumeric.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qversiontagging.h \
-		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
-		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qstring.h \
-		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qchar.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qbytearray.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qrefcount.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qnamespace.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qarraydata.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qstringliteral.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qstringalgorithms.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qstringview.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qstringbuilder.h \
-		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qlist.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtQuick/QQuickView \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtQuick/qquickview.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtQuick/qquickwindow.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtQuick/qtquickglobal.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtQml/qtqmlglobal.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtQml/qtqml-config.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtNetwork/qtnetworkglobal.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtNetwork/qtnetwork-config.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/qtguiglobal.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/qtgui-config.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtQuick/qtquick-config.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtQuick/qsgrendererinterface.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtQuick/qsgnode.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtQuick/qsggeometry.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/qopengl.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qt_windows.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/qopengles2ext.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/qopenglext.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/QRectF \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qrect.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qmargins.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qsize.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qpoint.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/QMatrix4x4 \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/qmatrix4x4.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/qvector3d.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qmetatype.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qvarlengtharray.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qcontainerfwd.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qalgorithms.h \
-		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qiterator.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qcontainertools_impl.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qhashfunctions.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qpair.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qobjectdefs.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/qvector4d.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/qquaternion.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/qgenericmatrix.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qdebug.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qhash.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qiterator.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qlist.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qvector.h \
-		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qcontainertools_impl.h \
-		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qpoint.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qbytearraylist.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qstringlist.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qregexp.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qstringmatcher.h \
-		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qcoreevent.h \
-		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qscopedpointer.h \
-		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qmetatype.h \
-		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qvarlengtharray.h \
-		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qcontainerfwd.h \
-		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qobject_impl.h \
-		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/QDebug \
-		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qdebug.h \
-		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qhash.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qmap.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qtextstream.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qiodevice.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qobject.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qcoreevent.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qscopedpointer.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qobject_impl.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qlocale.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qvariant.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qshareddata.h \
@@ -1116,7 +1283,63 @@ sotadb.o: ../ClientManager/sotadb.cpp ../ClientManager/sotadb.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qcontiguouscache.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qsharedpointer.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qsharedpointer_impl.h \
-		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/QPoint
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qdatastream.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/qwindow.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/QObject \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/QEvent \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/QMargins \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/QRect \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/qsurface.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/qsurfaceformat.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/qwindowdefs.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/qwindowdefs_win.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/qicon.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/qpixmap.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/qpaintdevice.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/qcolor.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/qrgb.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/qrgba64.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/qimage.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/qpixelformat.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/qtransform.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/qmatrix.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/qpolygon.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/qregion.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qline.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/qpainterpath.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/qcursor.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/qevent.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/qkeysequence.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qurl.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qurlquery.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qfile.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qfiledevice.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/qvector2d.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/qtouchdevice.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtQml/qqml.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtQml/qqmlprivate.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qpointer.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtQml/qqmlparserstatus.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtQml/qqmlpropertyvaluesource.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtQml/qqmllist.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qmetaobject.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtQml/qqmldebug.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtQml/QQmlContext \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtQml/qqmlcontext.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtQml/qjsvalue.h \
+		../ClientManager/sotadb.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/QDebug \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/QSqlDatabase \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/qsqldatabase.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/qtsqlglobal.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/qtsql-config.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/QSqlDriver \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/qsqldriver.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/QSqlError \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/qsqlerror.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/QSqlQuery \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/qsqlquery.h \
+		../ClientManager/client.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o sotadb.o ../ClientManager/sotadb.cpp
 
 sotaserver.o: ../ClientManager/sotaserver.cpp ../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/QString \
@@ -1151,11 +1374,11 @@ sotaserver.o: ../ClientManager/sotaserver.cpp ../../../../garrett/Qt/5.14.1/gcc_
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qstringalgorithms.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qstringview.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qstringbuilder.h \
-		../ClientManager/sotaserver.h \
-		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/QObject \
-		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qobject.h \
-		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qobjectdefs.h \
-		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/QSysInfo \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtNetwork/QHostInfo \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtNetwork/qhostinfo.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtNetwork/qtnetworkglobal.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtNetwork/qtnetwork-config.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qlist.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qalgorithms.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qiterator.h \
@@ -1168,30 +1391,45 @@ sotaserver.o: ../ClientManager/sotaserver.cpp ../../../../garrett/Qt/5.14.1/gcc_
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qstringlist.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qregexp.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qstringmatcher.h \
-		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qcoreevent.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qscopedpointer.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtNetwork/qhostaddress.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qshareddata.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qhash.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtNetwork/qabstractsocket.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qiodevice.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qobject.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qobjectdefs.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qcoreevent.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qmetatype.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qvarlengtharray.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qcontainerfwd.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qobject_impl.h \
-		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/QDebug \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qdebug.h \
-		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qhash.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qmap.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qtextstream.h \
-		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qiodevice.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qlocale.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qvariant.h \
-		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qshareddata.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qset.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qcontiguouscache.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qsharedpointer.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtNetwork/QNetworkInterface \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtNetwork/qnetworkinterface.h \
+		../ClientManager/sotaserver.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/QObject \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/QDebug \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/QPoint
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o sotaserver.o ../ClientManager/sotaserver.cpp
 
 qrc_qml.o: qrc_qml.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_qml.o qrc_qml.cpp
+
+moc_client.o: moc_client.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_client.o moc_client.cpp
+
+moc_software.o: moc_software.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_software.o moc_software.cpp
 
 moc_sotadb.o: moc_sotadb.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_sotadb.o moc_sotadb.cpp

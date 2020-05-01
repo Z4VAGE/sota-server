@@ -7,11 +7,11 @@ Item {
 
     property color primaryColor: "#1e2124"
     property color secondaryColor: "#42464d"
-    property color accentColor: "#5ac18e"
-    property color accent2color: "#5ac1c1"
-    property color txtColor: "white"
-    property var activeBtn: dashButton
+    property color trim1Color: "#5ac18e"
+    property color trim2Color: "#5ac1c1"
+    property color textColor: "white"
     property string pageUrl: "qrc:/dashPage.qml"
+    property var activeBtn: dashButton
 
     Rectangle {
         id: navbar
@@ -25,45 +25,59 @@ Item {
 
             Rectangle {
                 id: label
-                width: root.width
-                height: 60
+                Layout.preferredHeight: 60
+                Layout.fillWidth: true
+                color: "transparent"
+
+                Text {
+                    anchors.centerIn: parent
+                    text: "Secure.OTA"
+                    font.family: "Uroob"
+                    font.bold: true
+                    horizontalAlignment: Text.AlignHCenter
+                    width: root.width
+                    font.pointSize: 40
+                    color: root.trim1Color
+                }
             }
+
             NavButton {
                 id: dashButton
                 txt: "Dashboard"
-                implicitHeight: 40
-                implicitWidth: root.width
+                Layout.fillWidth: root.width
+                Layout.preferredHeight: 40
                 active: (activeBtn === dashButton) ? 1 : 0
                 onSelected: handleChange("qrc:/dashPage.qml", dashButton)
             }
             NavButton {
                 id: clientsButton
                 txt: "Clients"
-                implicitHeight: 40
-                implicitWidth: root.width
+                Layout.fillWidth: root.width
+                Layout.preferredHeight: 40
                 active: (activeBtn === clientsButton) ? 1 : 0
                 onSelected: handleChange("qrc:/clientsPage.qml", clientsButton)
             }
             NavButton {
                 id: softwareButton
                 txt: "Software"
-                implicitHeight: 40
-                implicitWidth: root.width
+                Layout.fillWidth: root.width
+                Layout.preferredHeight: 40
                 active: (activeBtn === softwareButton) ? 1 : 0
                 onSelected: handleChange("qrc:/softwarePage.qml", softwareButton)
             }
             NavButton {
                 id: settingsButton
                 txt: "Settings"
-                implicitHeight: 40
-                implicitWidth: root.width
+                Layout.fillWidth: root.width
+                Layout.preferredHeight: 40
                 active: (activeBtn === settingsButton) ? 1 : 0
                 onSelected: handleChange("qrc:/settingsPage.qml", settingsButton)
             }
             Rectangle { // extra space
                 id: bottomspace
-                width: root.width
-                height: 200
+                Layout.preferredWidth: root.width
+                Layout.preferredHeight: 200
+                color: "transparent"
             }
 
         } // end columnLayout
