@@ -52,14 +52,16 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../ClientManager/main.cpp \
+SOURCES       = ../ClientManager/client.cpp \
+		../ClientManager/main.cpp \
 		../ClientManager/sotadb.cpp \
 		../ClientManager/sotaserver.cpp qrc_qml.cpp \
 		moc_client.cpp \
 		moc_software.cpp \
 		moc_sotadb.cpp \
 		moc_sotaserver.cpp
-OBJECTS       = main.o \
+OBJECTS       = client.o \
+		main.o \
 		sotadb.o \
 		sotaserver.o \
 		qrc_qml.o \
@@ -280,7 +282,8 @@ DIST          = ../../../../garrett/Qt/5.14.1/gcc_64/mkspecs/features/spec_pre.p
 		../ClientManager/ClientManager.pro ../ClientManager/client.h \
 		../ClientManager/software.h \
 		../ClientManager/sotadb.h \
-		../ClientManager/sotaserver.h ../ClientManager/main.cpp \
+		../ClientManager/sotaserver.h ../ClientManager/client.cpp \
+		../ClientManager/main.cpp \
 		../ClientManager/sotadb.cpp \
 		../ClientManager/sotaserver.cpp
 QMAKE_TARGET  = ClientManager
@@ -736,7 +739,7 @@ distdir: FORCE
 	$(COPY_FILE) --parents ../ClientManager/qml.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents ../../../../garrett/Qt/5.14.1/gcc_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../ClientManager/client.h ../ClientManager/software.h ../ClientManager/sotadb.h ../ClientManager/sotaserver.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../ClientManager/main.cpp ../ClientManager/sotadb.cpp ../ClientManager/sotaserver.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../ClientManager/client.cpp ../ClientManager/main.cpp ../ClientManager/sotadb.cpp ../ClientManager/sotaserver.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -957,6 +960,7 @@ moc_sotadb.cpp: ../ClientManager/sotadb.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qvarlengtharray.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qcontainerfwd.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qobject_impl.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/QVector \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/QDebug \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qdebug.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/qhash.h \
@@ -980,7 +984,12 @@ moc_sotadb.cpp: ../ClientManager/sotadb.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/qsqlerror.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/QSqlQuery \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/qsqlquery.h \
-		../ClientManager/client.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtQml/QQmlListProperty \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtQml/qqmllist.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtQml/qtqmlglobal.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtQml/qtqml-config.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtNetwork/qtnetworkglobal.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtNetwork/qtnetwork-config.h \
 		moc_predefs.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/bin/moc
 	/home/garrett/Qt/5.14.1/gcc_64/bin/moc $(DEFINES) --include /home/serveradmin/sota-server/serverGUI/build-ClientManager-Desktop_Qt_5_14_1_GCC_64bit-Debug/moc_predefs.h -I/home/garrett/Qt/5.14.1/gcc_64/mkspecs/linux-g++ -I/home/serveradmin/sota-server/serverGUI/ClientManager -I/home/garrett/Qt/5.14.1/gcc_64/include -I/home/garrett/Qt/5.14.1/gcc_64/include/QtQuick -I/home/garrett/Qt/5.14.1/gcc_64/include/QtGui -I/home/garrett/Qt/5.14.1/gcc_64/include/QtQmlModels -I/home/garrett/Qt/5.14.1/gcc_64/include/QtQml -I/home/garrett/Qt/5.14.1/gcc_64/include/QtNetwork -I/home/garrett/Qt/5.14.1/gcc_64/include/QtSql -I/home/garrett/Qt/5.14.1/gcc_64/include/QtCore -I. -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../ClientManager/sotadb.h -o moc_sotadb.cpp
@@ -1071,6 +1080,9 @@ compiler_lex_clean:
 compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_header_clean 
 
 ####### Compile
+
+client.o: ../ClientManager/client.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o client.o ../ClientManager/client.cpp
 
 main.o: ../ClientManager/main.cpp ../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/QGuiApplication \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtGui/qguiapplication.h \
@@ -1176,6 +1188,7 @@ main.o: ../ClientManager/main.cpp ../../../../garrett/Qt/5.14.1/gcc_64/include/Q
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/QPoint \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/QSysInfo \
 		../ClientManager/sotadb.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/QVector \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/QSqlDatabase \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/qsqldatabase.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/qtsqlglobal.h \
@@ -1186,7 +1199,7 @@ main.o: ../ClientManager/main.cpp ../../../../garrett/Qt/5.14.1/gcc_64/include/Q
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/qsqlerror.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/QSqlQuery \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/qsqlquery.h \
-		../ClientManager/client.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtQml/QQmlListProperty \
 		../ClientManager/software.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../ClientManager/main.cpp
 
@@ -1328,6 +1341,7 @@ sotadb.o: ../ClientManager/sotadb.cpp ../../../../garrett/Qt/5.14.1/gcc_64/inclu
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtQml/qqmlcontext.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtQml/qjsvalue.h \
 		../ClientManager/sotadb.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/QVector \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtCore/QDebug \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/QSqlDatabase \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/qsqldatabase.h \
@@ -1339,6 +1353,7 @@ sotadb.o: ../ClientManager/sotadb.cpp ../../../../garrett/Qt/5.14.1/gcc_64/inclu
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/qsqlerror.h \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/QSqlQuery \
 		../../../../garrett/Qt/5.14.1/gcc_64/include/QtSql/qsqlquery.h \
+		../../../../garrett/Qt/5.14.1/gcc_64/include/QtQml/QQmlListProperty \
 		../ClientManager/client.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o sotadb.o ../ClientManager/sotadb.cpp
 

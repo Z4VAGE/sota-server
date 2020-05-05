@@ -5,34 +5,61 @@
 #include <QQuickView>
 #include <QQmlContext>
 #include "sotadb.h"
-#include "client.h"
 
 QSqlDatabase db;
 
 const QString DRIVER("QSQLITE");
 const QString dbName("/home/" + qgetenv("USER") + "/sota-server/db/sotaserver.db");
-
-QList<Client*> localClientList;
+QVariantList clientList;
+int numclients = 0;
 
 SOTAdb::SOTAdb(QObject *parent) : QObject(parent)
 {
-    if(QSqlDatabase::isDriverAvailable(DRIVER)){ //initialize database
+    numclients = 0;
+    qDebug() << "creating db object";
+
+    if(QSqlDatabase::isDriverAvailable(DRIVER)){ //check for database driver
         db = QSqlDatabase::addDatabase(DRIVER);
         db.setDatabaseName(dbName);
         if(!db.open()){ //db didn't open
-          qWarning() << "ERROR: " << db.lastError();
-          emit openFailed();
-        }
-    }
-    getClients();
+            qWarning() << "ERROR: " << db.lastError();
+            //emit openFailed();
+        }else{//opened db
+
+            open = true;
+            qDebug() << "opened/created database";
+
+            //need set initialized after checking if tabels exist
+            if(!initialized){ //db tables haven't been created
+
+
+                initDB(); //will either create tables, or they already exist
+
+                //successfully created tables
+                initialized = true;
+                queryAllClients();
+
+            }else{
+
+                //db tables exist
+                queryAllClients();
+            }//end check initialized
+
+        }//end try open
+
+    }else{
+        //driver not available
+        qWarning() << "QSQLITE database driver unavailable";
+    }//end check driver
 
 }
 
-QString SOTAdb::initDB()
+
+int SOTAdb::initDB()
 {
-    if(!db.open()){
+    if(!open || initialized){//db didn't open on object creation OR tables already created
       qWarning() << "ERROR: " << db.lastError();
-      return QString("Could not create db");
+      return 0;
     }
 
     QSqlQuery sqlClientsTable("CREATE TABLE CLIENTS (" \
@@ -57,18 +84,20 @@ QString SOTAdb::initDB()
        "location	TEXT" \
        ");");
 
-    if(!sqlClientsTable.isActive()){
+    if(!sqlClientsTable.isActive()){ //something went wrong creating Clients table
         qWarning() << "ERROR: " << sqlClientsTable.lastError().text();
-        return QString(sqlClientsTable.lastError().text());
+        return 0;
     }
 
-    if(!sqlSoftwareTable.isActive()){
+    if(!sqlSoftwareTable.isActive()){ //something went wrong creating Software table
         qWarning() << "ERROR: " << sqlSoftwareTable.lastError().text();
-        return QString(sqlSoftwareTable.lastError().text());
+        return 0;
     }
 
-    return QString("Success");
+    return 1; //success
+
 }// end initDB
+
 
 
 void SOTAdb::createClient(QString rand)
@@ -96,54 +125,119 @@ void SOTAdb::createClient(QString rand)
     if(!query.isActive()){
         qWarning() << "ERROR: " << query.lastError().text();
         return;
-    }
+    }else{ //insert successful
 
 //    emit newdata();
 
+
+        ClientModel tempclient;
+        tempclient.setUnique_id(uniqueID);
+        tempclient.setInit_id(initID);
+        tempclient.setSoftware_id("");
+        tempclient.setLast_seen("");
+        tempclient.setLast_ip("");
+        tempclient.setStatus("");
+        tempclient.setGroup_id("");
+        tempclient.setLast_sw_id("");
+        tempclient.setActive("");
+
+        cList.append(tempclient);
+    }
 }
 
 
-//QString SOTAdb::getClient() // get all info for one client
-//{
-//    return QString("not done");
-//}
 
-void SOTAdb::getClients() // get all info for many clients
+
+int SOTAdb::queryAllClients() // get all info for many clients
 {
-    if(!db.open()){ // can't open db
-      qWarning() << "ERROR: " << db.lastError();
+    qDebug() << "starting loadAllClients()";
+
+    if (!open){ //db isn't open, try to open
+        if(!db.open()){ // can't open db
+          qWarning() << "ERROR opening db in SOTAdb::loadAllClients: " << db.lastError();
+          return 0;
+        }
     }
 
     QSqlQuery query;
     query.prepare("SELECT * FROM CLIENTS");
 
-    if(!query.exec()){
-        qWarning() << "ERROR: " << query.lastError().text();
-        return;
+    if(!query.exec()){ //error executing query
+        qWarning() << "ERROR executing query in SOTAdb::loadAllClients: " << query.lastError().text();
+        return 0;
     }
+
+    qDebug() << "successfully ran select * from clients";
 
     while (query.next()){
 
-        Client* newclient = new Client;
-        newclient->setProperty("unique_id", query.value(0).toString());
-        newclient->setProperty("init_id", query.value(1).toString());
-        newclient->setProperty("software_id", query.value(2).toString());
-        newclient->setProperty("last_seen", query.value(3).toString());
-        newclient->setProperty("last_ip", query.value(4).toString());
-        newclient->setProperty("status", query.value(5).toString());
-        newclient->setProperty("group_id", query.value(6).toString());
-        newclient->setProperty("last_sw_id", query.value(7).toString());
-        newclient->setProperty("active", query.value(8).toString());
-        localClientList.append(newclient);
+        //create new ClientEntity type and set values
+//        ClientEntity dbclient =
+//        {
+//            query.value(0).toString(),
+//            query.value(1).toString(),
+//            query.value(2).toString(),
+//            query.value(3).toString(),
+//            query.value(4).toString(),
+//            query.value(5).toString(),
+//            query.value(6).toString(),
+//            query.value(7).toString(),
+//            query.value(8).toString()
+//        };
 
-        QQuickView view;
-        QQmlContext *ctxt = view.rootContext();
-        ctxt->setContextProperty("clientList", QVariant::fromValue(localClientList));
+       QString uniqueid = query.value(0).toString();
+       QString initid = query.value(1).toString();
+       QString softwareid = query.value(2).toString();
+       QString lastseen = query.value(3).toString();
+       QString lastip = query.value(4).toString();
+       QString status = query.value(5).toString();
+       QString groupid = query.value(6).toString();
+       QString lastswid = query.value(7).toString();
+       QString active = query.value(8).toString();
+
+       ClientModel tempclient;
+       tempclient.setUnique_id(uniqueid);
+       tempclient.setInit_id(initid);
+       tempclient.setSoftware_id(softwareid);
+       tempclient.setLast_seen(lastseen);
+       tempclient.setLast_ip(lastip);
+       tempclient.setStatus(status);
+       tempclient.setGroup_id(groupid);
+       tempclient.setLast_sw_id(lastswid);
+       tempclient.setActive(active);
+
+
+       cList.append(tempclient);
+//       dbclient << query.value(0).toString();
+//       dbclient << query.value(1).toString();
+//       dbclient << query.value(2).toString();
+//       dbclient << query.value(3).toString();
+//       dbclient << query.value(4).toString();
+//       dbclient << query.value(5).toString();
+//       dbclient << query.value(6).toString();
+//       dbclient << query.value(7).toString();
+//       dbclient << query.value(8).toString();
+
+
+        //conver client to QVariant
+        //QVariant qclient;
+        //qclient.setValue(dbclient);
+        //qclient.setValue(tempclient);
+
+        //clientList.append(qclient);
+        qDebug() << "loaded client uniqueid: " + query.value(0).toString();
 
     }
-    return;
-}
 
+    numclients = cList.size();
+    qDebug() << "loaded All clients";
+    qDebug() << "Num clients: " << numclients;
+
+    return 1;
+}//end constructor
+
+
+/*
 int SOTAdb::getnumclients() //might only return number of columns - fix
 {
     if(!db.open()){ // can't open db
@@ -162,7 +256,7 @@ int SOTAdb::getnumclients() //might only return number of columns - fix
 
     return numclients;
 }
-
+*/
 
 //QString SOTAdb::updateClient()
 //{

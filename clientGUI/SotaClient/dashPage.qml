@@ -46,13 +46,12 @@ Item {
                     id: infopanel
                     columns: 5
                     rows: 6
-                    anchors.fill: parent
                     // (column, row)
 
                     // (1-4,1)
                     Text {
                         id: infopanelLabel
-                        text: "Server Information"
+                        text: "Machine Information"
                         font.pointSize: infobox.infosize
                         color: color4
                         Layout.row: 1
@@ -66,7 +65,7 @@ Item {
                     // (1,2)
                     Text {
                         id: localHostLabel
-                        text: "Local Hostname: "
+                        text: "Server Hostname: "
                         font.pointSize: infobox.infosize
                         color: textColor
                         Layout.column: 1
@@ -208,108 +207,6 @@ Item {
                         Layout.topMargin: 15
                     }
 
-                    // (3,4)
-                    Text {
-                        id: statusLabel
-                        text: "Status: "
-                        font.pointSize: infobox.infosize
-                        color: textColor
-                        Layout.column: 3
-                        Layout.row: 4
-                        Layout.fillHeight: true
-                        Layout.fillWidth: true
-                        Layout.leftMargin: infobox.middlemargin
-                        Layout.topMargin: 15
-                    }
-
-                    // (4,4)
-                    Text {
-                        id: statusValue
-                        text: server.getStatus()
-                        font.pointSize: infobox.infosize
-                        color: trim1Color //(versionValue.text === "Active") ? trim1Color : "red"
-                        Layout.column: 4
-                        Layout.row: 4
-                        Layout.columnSpan: 1
-                        Layout.fillHeight: true
-                        Layout.fillWidth: true
-                        Layout.leftMargin: 15
-                        Layout.topMargin: 15
-                    }
-
-                    // (1,5)
-                    Text {
-                        id: clientsActiveLabel
-                        text: "Active Clients: "
-                        font.pointSize: infobox.infosize
-                        color: textColor
-                        Layout.column: 1
-                        Layout.row: 5
-                        Layout.fillHeight: true
-                        Layout.fillWidth: true
-                        Layout.leftMargin: 15
-                        Layout.topMargin: 15
-                    }
-
-                    // (2,5)
-                    Text {
-                        id: clientsActiveValue
-                        text: "NumActive" //make function db.strNumActive()
-                        font.pointSize: infobox.infosize
-                        color: trim1Color
-                        Layout.column: 2
-                        Layout.row: 5
-                        Layout.columnSpan: 1
-                        Layout.fillHeight: true
-                        Layout.fillWidth: true
-                        Layout.leftMargin: 15
-                        Layout.topMargin: 15
-                    }
-
-                    // (3,5)
-                    Text {
-                        id: clientsInactiveLabel
-                        text: "Inactive Clients: "
-                        font.pointSize: infobox.infosize
-                        color: textColor
-                        Layout.column: 3
-                        Layout.row: 5
-                        Layout.fillHeight: true
-                        Layout.fillWidth: true
-                        Layout.leftMargin: infobox.middlemargin
-                        Layout.topMargin: 15
-                    }
-
-                    // (4,5)
-                    Text {
-                        id: clientsInactiveValue
-                        text: "NumInactive"// make function db.strNumInactive()
-                        font.pointSize: infobox.infosize
-                        color: trim1Color
-                        Layout.column: 4
-                        Layout.row: 5
-                        Layout.columnSpan: 1
-                        Layout.fillHeight: true
-                        Layout.fillWidth: true
-                        Layout.leftMargin: 15
-                        Layout.topMargin: 15
-                        Layout.bottomMargin: 15
-                    }
-
-//                    NiceButton {
-//                        id: addclient
-//                        txt: "Add Client"
-//                        btnRadius: 10
-//                        fontsize: 15
-//                        Layout.column: 1
-//                        Layout.row: 6
-//                        Layout.preferredWidth: 150
-//                        Layout.preferredHeight: 50
-//                        Layout.leftMargin: 15
-//                        Layout.topMargin: 20
-//                        Layout.bottomMargin: 15
-//                        onClicked: server.getUser()
-//                    }
 
                 } // end infopanel GridLayout
 

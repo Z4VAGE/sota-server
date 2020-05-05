@@ -2,6 +2,8 @@ import QtQuick 2.0
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.12
 
+//import DB 1.0
+
 Item {
     id: root
 
@@ -47,6 +49,8 @@ Item {
                     id: infopanel
                     columns: 5
                     rows: 4
+                    anchors.fill: parent
+                    Layout.margins: 10
                     // (column, row)
 
                     // (1-4,1)
@@ -57,7 +61,7 @@ Item {
                         color: color4
                         Layout.row: 1
                         Layout.columnSpan: 5
-                        Layout.fillHeight: true
+                        Layout.preferredHeight: 25
                         Layout.fillWidth: true
                         Layout.leftMargin: 15
                         Layout.topMargin: 15
@@ -74,7 +78,7 @@ Item {
                         Layout.preferredHeight: 50
                         Layout.topMargin: 15
                         Layout.leftMargin: 15
-                        onClicked: db.createClient(server.gen_rand(31))
+                        onClicked: addClient()
                     }
 
                     RowButton {
@@ -83,6 +87,9 @@ Item {
                         Layout.columnSpan: 5
                         Layout.fillWidth: true
                         Layout.preferredHeight: 30
+                        Layout.topMargin: 15
+                        isEnabled: true
+                        firstMargin: 10
                         txt1: "Unique ID"
                         txt2: "Active?"
                         txt3: "Status"
@@ -96,22 +103,31 @@ Item {
                         Layout.columnSpan: 5
                         Layout.fillWidth: true
                         Layout.fillHeight: true
-                        Layout.margins: 15
+                        Layout.bottomMargin: 20
+                        ScrollBar.vertical: ScrollBar {
+                            parent: listview
+                            policy: ScrollBar.AlwaysOn
+                            anchors.right: parent.right
+                            snapMode: ScrollBar.SnapOnRelease
+                        }
 
-                        model: clientList
+
+                        model: cList
                         delegate: RowButton {
-                            id: listDelegate
                             Layout.fillWidth: true
                             Layout.preferredHeight: 30
-                            txt1: clientList.modelData.unique_id
-                            txt2: clientList.modelData.active
-                            txt3: clientList.modelData.status
-                            txt4: clientList.modelData.last_seen
-                            txt5: clientList.modelData.software_id
+                            firstMargin: 20
+                            implicitHeight: 30
+                            implicitWidth: parent.width
+                            txt1: model.modelData.unique_id
+                            txt2: model.modelData.active
+                            txt3: model.modelData.status
+                            txt4: model.modelData.last_seen
+                            txt5: model.modelData.software_id
+                            onClicked: console.log("clicked a client, now do something")
                         }//end delegate
 
                     }//end listview
-
 
                 } // end infopanel GridLayout
 
@@ -121,10 +137,14 @@ Item {
 
     } // End Rectangle
 
-    function fillClients(){
+    function addClient(){
 
-    db.getClients();
 
+
+        db.createClient(server.gen_rand(31));
+        listview.forceLayout(); //force refresh adding new client
+
+        console.log(cList);
 
     }
 

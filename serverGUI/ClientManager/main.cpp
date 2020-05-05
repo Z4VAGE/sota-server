@@ -4,8 +4,9 @@
 #include <QQmlContext>
 #include "sotaserver.h"
 #include "sotadb.h"
-#include "client.h"
+//#include "client.h"
 #include "software.h"
+
 
 int main(int argc, char *argv[])
 {
@@ -19,18 +20,24 @@ int main(int argc, char *argv[])
     QScopedPointer<SOTAserver> server(new SOTAserver);
     QScopedPointer<SOTAdb> db(new SOTAdb);
 
+    //qmlRegisterUncreatableType<SOTAdb>("DB", 1, 0, "SOTAdb", QStringLiteral("database should not be created in QML"));
+    //SOTAdb db;
+
     //lists for client & software model
-    QList<Client*> clientListModel;
-    QList<Software*> softwareListModel;
+    //QList<Client*> clientListModel;
+    //QList<Software*> softwareListModel;
 
     QQmlApplicationEngine engine;
 
     //Define and set custom classes as properties of engine
     //Allows communication between QML and C++
+
     engine.rootContext()->setContextProperty(QStringLiteral("server"), server.data());
     engine.rootContext()->setContextProperty(QStringLiteral("db"), db.data());
-    engine.rootContext()->setContextProperty("clientList", QVariant::fromValue(clientListModel));
-    engine.rootContext()->setContextProperty("softwareList", QVariant::fromValue(softwareListModel));
+    //engine.rootContext()->setContextProperty(QStringLiteral("dbData"), db.data());
+    engine.rootContext()->setContextProperty("clientList", QVariant::fromValue(db->clientList));
+    engine.rootContext()->setContextProperty("cList", QVariant::fromValue(db->cList));
+    //engine.rootContext()->setContextProperty("softwareList", QVariant::fromValue(softwareListModel));
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

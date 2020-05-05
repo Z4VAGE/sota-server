@@ -4,11 +4,11 @@ import QtQuick.Layouts 1.12
 Item {
     id: root
 
-    property string txt1
-    property string txt2
-    property string txt3
-    property string txt4
-    property string txt5
+    property string txt1: "null"
+    property string txt2: "null"
+    property string txt3: "null"
+    property string txt4: "null"
+    property string txt5: "null"
     property color primaryColor: "#1e2124"
     property color secondaryColor: "#42464d"
     property color color3: "#282b30"
@@ -16,9 +16,10 @@ Item {
     property color trim1Color: "#5ac18e"
     property color trim2Color: "#5ac1c1"
     property color textColor: "white"
-    property int fontsize: 20
+    property int fontsize: 15
     property int btnRadius: 0
     property bool isEnabled: true
+    property int firstMargin: 0
 
     signal clicked()
 
@@ -32,51 +33,53 @@ Item {
 
         RowLayout {
             id: rowlayout
+            anchors.fill: parent
 
             Text {
                 id: t1
-                text: txt1
-                font.pointSize: infobox.infosize
+                text: (txt1 == "") ? "null" : txt1
+                font.pointSize: fontsize
                 color: textColor
                 Layout.column: 1
                 Layout.fillHeight: true
-                Layout.fillWidth: true
+                Layout.preferredWidth: parent.width / 5
+                Layout.rightMargin: firstMargin
             }
             Text {
                 id: t2
-                text: txt2
-                font.pointSize: infobox.infosize
+                text: (txt2 == "") ? "null" : txt2
+                font.pointSize: fontsize
                 color: textColor
                 Layout.column: 1
                 Layout.fillHeight: true
-                Layout.fillWidth: true
+                Layout.preferredWidth: parent.width / 5
             }
             Text {
                 id: t3
-                text: txt3
-                font.pointSize: infobox.infosize
+                text: (txt3 == "") ? "null" : txt3
+                font.pointSize: fontsize
                 color: textColor
                 Layout.column: 1
                 Layout.fillHeight: true
-                Layout.fillWidth: true
+                Layout.preferredWidth: parent.width / 5
             }
             Text {
                 id: t4
-                text: txt4
-                font.pointSize: infobox.infosize
+                text: (txt4 == "") ? "null" : txt4
+                font.pointSize: fontsize
                 color: textColor
                 Layout.column: 1
                 Layout.fillHeight: true
-                Layout.fillWidth: true
+                Layout.preferredWidth: parent.width / 5
             }
             Text {
                 id: t5
-                text: txt5
-                font.pointSize: infobox.infosize
+                text: (txt5 == "") ? "null" : txt5
+                font.pointSize: fontsize
                 color: textColor
                 Layout.column: 5
                 Layout.fillHeight: true
-                Layout.fillWidth: true
+                Layout.preferredWidth: parent.width / 5
             }
 
         }
@@ -85,7 +88,7 @@ Item {
             id: area
             enabled: isEnabled
             anchors.fill: parent
-            hoverEnabled: true
+            hoverEnabled: isEnabled
             onPressed: {
                 flashon.start()
             }

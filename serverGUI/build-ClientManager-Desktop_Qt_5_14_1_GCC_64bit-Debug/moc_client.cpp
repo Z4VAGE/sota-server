@@ -21,36 +21,36 @@
 QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
-struct qt_meta_stringdata_Client_t {
+struct qt_meta_stringdata_ClientModel_t {
     QByteArrayData data[10];
-    char stringdata0[89];
+    char stringdata0[94];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
-    qptrdiff(offsetof(qt_meta_stringdata_Client_t, stringdata0) + ofs \
+    qptrdiff(offsetof(qt_meta_stringdata_ClientModel_t, stringdata0) + ofs \
         - idx * sizeof(QByteArrayData)) \
     )
-static const qt_meta_stringdata_Client_t qt_meta_stringdata_Client = {
+static const qt_meta_stringdata_ClientModel_t qt_meta_stringdata_ClientModel = {
     {
-QT_MOC_LITERAL(0, 0, 6), // "Client"
-QT_MOC_LITERAL(1, 7, 9), // "unique_id"
-QT_MOC_LITERAL(2, 17, 7), // "init_id"
-QT_MOC_LITERAL(3, 25, 11), // "software_id"
-QT_MOC_LITERAL(4, 37, 9), // "last_seen"
-QT_MOC_LITERAL(5, 47, 7), // "last_ip"
-QT_MOC_LITERAL(6, 55, 6), // "status"
-QT_MOC_LITERAL(7, 62, 8), // "group_id"
-QT_MOC_LITERAL(8, 71, 10), // "last_sw_id"
-QT_MOC_LITERAL(9, 82, 6) // "active"
+QT_MOC_LITERAL(0, 0, 11), // "ClientModel"
+QT_MOC_LITERAL(1, 12, 9), // "unique_id"
+QT_MOC_LITERAL(2, 22, 7), // "init_id"
+QT_MOC_LITERAL(3, 30, 11), // "software_id"
+QT_MOC_LITERAL(4, 42, 9), // "last_seen"
+QT_MOC_LITERAL(5, 52, 7), // "last_ip"
+QT_MOC_LITERAL(6, 60, 6), // "status"
+QT_MOC_LITERAL(7, 67, 8), // "group_id"
+QT_MOC_LITERAL(8, 76, 10), // "last_sw_id"
+QT_MOC_LITERAL(9, 87, 6) // "active"
 
     },
-    "Client\0unique_id\0init_id\0software_id\0"
+    "ClientModel\0unique_id\0init_id\0software_id\0"
     "last_seen\0last_ip\0status\0group_id\0"
     "last_sw_id\0active"
 };
 #undef QT_MOC_LITERAL
 
-static const uint qt_meta_data_Client[] = {
+static const uint qt_meta_data_ClientModel[] = {
 
  // content:
        8,       // revision
@@ -60,93 +60,57 @@ static const uint qt_meta_data_Client[] = {
        9,   14, // properties
        0,    0, // enums/sets
        0,    0, // constructors
-       0,       // flags
+       4,       // flags
        0,       // signalCount
 
  // properties: name, type, flags
-       1, QMetaType::QString, 0x00095003,
-       2, QMetaType::QString, 0x00095003,
-       3, QMetaType::QString, 0x00095003,
-       4, QMetaType::QString, 0x00095003,
-       5, QMetaType::QString, 0x00095003,
-       6, QMetaType::QString, 0x00095003,
-       7, QMetaType::QString, 0x00095003,
-       8, QMetaType::QString, 0x00095003,
-       9, QMetaType::QString, 0x00095003,
+       1, QMetaType::QString, 0x00095103,
+       2, QMetaType::QString, 0x00095103,
+       3, QMetaType::QString, 0x00095103,
+       4, QMetaType::QString, 0x00095103,
+       5, QMetaType::QString, 0x00095103,
+       6, QMetaType::QString, 0x00095103,
+       7, QMetaType::QString, 0x00095103,
+       8, QMetaType::QString, 0x00095103,
+       9, QMetaType::QString, 0x00095103,
 
        0        // eod
 };
 
-void Client::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+void ClientModel::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
 
 #ifndef QT_NO_PROPERTIES
     if (_c == QMetaObject::ReadProperty) {
-        auto *_t = static_cast<Client *>(_o);
+        auto *_t = reinterpret_cast<ClientModel *>(_o);
         Q_UNUSED(_t)
         void *_v = _a[0];
         switch (_id) {
-        case 0: *reinterpret_cast< QString*>(_v) = _t->m_unique_id; break;
-        case 1: *reinterpret_cast< QString*>(_v) = _t->m_init_id; break;
-        case 2: *reinterpret_cast< QString*>(_v) = _t->m_software_id; break;
-        case 3: *reinterpret_cast< QString*>(_v) = _t->m_last_seen; break;
-        case 4: *reinterpret_cast< QString*>(_v) = _t->m_last_ip; break;
-        case 5: *reinterpret_cast< QString*>(_v) = _t->m_status; break;
-        case 6: *reinterpret_cast< QString*>(_v) = _t->m_group_id; break;
-        case 7: *reinterpret_cast< QString*>(_v) = _t->m_last_sw_id; break;
-        case 8: *reinterpret_cast< QString*>(_v) = _t->m_active; break;
+        case 0: *reinterpret_cast< QString*>(_v) = _t->unique_id(); break;
+        case 1: *reinterpret_cast< QString*>(_v) = _t->init_id(); break;
+        case 2: *reinterpret_cast< QString*>(_v) = _t->software_id(); break;
+        case 3: *reinterpret_cast< QString*>(_v) = _t->last_seen(); break;
+        case 4: *reinterpret_cast< QString*>(_v) = _t->last_ip(); break;
+        case 5: *reinterpret_cast< QString*>(_v) = _t->status(); break;
+        case 6: *reinterpret_cast< QString*>(_v) = _t->group_id(); break;
+        case 7: *reinterpret_cast< QString*>(_v) = _t->last_sw_id(); break;
+        case 8: *reinterpret_cast< QString*>(_v) = _t->active(); break;
         default: break;
         }
     } else if (_c == QMetaObject::WriteProperty) {
-        auto *_t = static_cast<Client *>(_o);
+        auto *_t = reinterpret_cast<ClientModel *>(_o);
         Q_UNUSED(_t)
         void *_v = _a[0];
         switch (_id) {
-        case 0:
-            if (_t->m_unique_id != *reinterpret_cast< QString*>(_v)) {
-                _t->m_unique_id = *reinterpret_cast< QString*>(_v);
-            }
-            break;
-        case 1:
-            if (_t->m_init_id != *reinterpret_cast< QString*>(_v)) {
-                _t->m_init_id = *reinterpret_cast< QString*>(_v);
-            }
-            break;
-        case 2:
-            if (_t->m_software_id != *reinterpret_cast< QString*>(_v)) {
-                _t->m_software_id = *reinterpret_cast< QString*>(_v);
-            }
-            break;
-        case 3:
-            if (_t->m_last_seen != *reinterpret_cast< QString*>(_v)) {
-                _t->m_last_seen = *reinterpret_cast< QString*>(_v);
-            }
-            break;
-        case 4:
-            if (_t->m_last_ip != *reinterpret_cast< QString*>(_v)) {
-                _t->m_last_ip = *reinterpret_cast< QString*>(_v);
-            }
-            break;
-        case 5:
-            if (_t->m_status != *reinterpret_cast< QString*>(_v)) {
-                _t->m_status = *reinterpret_cast< QString*>(_v);
-            }
-            break;
-        case 6:
-            if (_t->m_group_id != *reinterpret_cast< QString*>(_v)) {
-                _t->m_group_id = *reinterpret_cast< QString*>(_v);
-            }
-            break;
-        case 7:
-            if (_t->m_last_sw_id != *reinterpret_cast< QString*>(_v)) {
-                _t->m_last_sw_id = *reinterpret_cast< QString*>(_v);
-            }
-            break;
-        case 8:
-            if (_t->m_active != *reinterpret_cast< QString*>(_v)) {
-                _t->m_active = *reinterpret_cast< QString*>(_v);
-            }
-            break;
+        case 0: _t->setUnique_id(*reinterpret_cast< QString*>(_v)); break;
+        case 1: _t->setInit_id(*reinterpret_cast< QString*>(_v)); break;
+        case 2: _t->setSoftware_id(*reinterpret_cast< QString*>(_v)); break;
+        case 3: _t->setLast_seen(*reinterpret_cast< QString*>(_v)); break;
+        case 4: _t->setLast_ip(*reinterpret_cast< QString*>(_v)); break;
+        case 5: _t->setStatus(*reinterpret_cast< QString*>(_v)); break;
+        case 6: _t->setGroup_id(*reinterpret_cast< QString*>(_v)); break;
+        case 7: _t->setLast_sw_id(*reinterpret_cast< QString*>(_v)); break;
+        case 8: _t->setActive(*reinterpret_cast< QString*>(_v)); break;
         default: break;
         }
     } else if (_c == QMetaObject::ResetProperty) {
@@ -158,53 +122,14 @@ void Client::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
     Q_UNUSED(_a);
 }
 
-QT_INIT_METAOBJECT const QMetaObject Client::staticMetaObject = { {
-    QMetaObject::SuperData::link<QObject::staticMetaObject>(),
-    qt_meta_stringdata_Client.data,
-    qt_meta_data_Client,
+QT_INIT_METAOBJECT const QMetaObject ClientModel::staticMetaObject = { {
+    nullptr,
+    qt_meta_stringdata_ClientModel.data,
+    qt_meta_data_ClientModel,
     qt_static_metacall,
     nullptr,
     nullptr
 } };
 
-
-const QMetaObject *Client::metaObject() const
-{
-    return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
-}
-
-void *Client::qt_metacast(const char *_clname)
-{
-    if (!_clname) return nullptr;
-    if (!strcmp(_clname, qt_meta_stringdata_Client.stringdata0))
-        return static_cast<void*>(this);
-    return QObject::qt_metacast(_clname);
-}
-
-int Client::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
-{
-    _id = QObject::qt_metacall(_c, _id, _a);
-    if (_id < 0)
-        return _id;
-    
-#ifndef QT_NO_PROPERTIES
-    if (_c == QMetaObject::ReadProperty || _c == QMetaObject::WriteProperty
-            || _c == QMetaObject::ResetProperty || _c == QMetaObject::RegisterPropertyMetaType) {
-        qt_static_metacall(this, _c, _id, _a);
-        _id -= 9;
-    } else if (_c == QMetaObject::QueryPropertyDesignable) {
-        _id -= 9;
-    } else if (_c == QMetaObject::QueryPropertyScriptable) {
-        _id -= 9;
-    } else if (_c == QMetaObject::QueryPropertyStored) {
-        _id -= 9;
-    } else if (_c == QMetaObject::QueryPropertyEditable) {
-        _id -= 9;
-    } else if (_c == QMetaObject::QueryPropertyUser) {
-        _id -= 9;
-    }
-#endif // QT_NO_PROPERTIES
-    return _id;
-}
 QT_WARNING_POP
 QT_END_MOC_NAMESPACE

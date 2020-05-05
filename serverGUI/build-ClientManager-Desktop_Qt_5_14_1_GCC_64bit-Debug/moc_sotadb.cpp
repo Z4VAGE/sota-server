@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_SOTAdb_t {
-    QByteArrayData data[9];
-    char stringdata0[79];
+    QByteArrayData data[4];
+    char stringdata0[28];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -33,19 +33,12 @@ struct qt_meta_stringdata_SOTAdb_t {
 static const qt_meta_stringdata_SOTAdb_t qt_meta_stringdata_SOTAdb = {
     {
 QT_MOC_LITERAL(0, 0, 6), // "SOTAdb"
-QT_MOC_LITERAL(1, 7, 10), // "openFailed"
-QT_MOC_LITERAL(2, 18, 0), // ""
-QT_MOC_LITERAL(3, 19, 7), // "newData"
-QT_MOC_LITERAL(4, 27, 6), // "initDB"
-QT_MOC_LITERAL(5, 34, 12), // "createClient"
-QT_MOC_LITERAL(6, 47, 6), // "initID"
-QT_MOC_LITERAL(7, 54, 10), // "getClients"
-QT_MOC_LITERAL(8, 65, 13) // "getnumclients"
+QT_MOC_LITERAL(1, 7, 12), // "createClient"
+QT_MOC_LITERAL(2, 20, 0), // ""
+QT_MOC_LITERAL(3, 21, 6) // "initID"
 
     },
-    "SOTAdb\0openFailed\0\0newData\0initDB\0"
-    "createClient\0initID\0getClients\0"
-    "getnumclients"
+    "SOTAdb\0createClient\0\0initID"
 };
 #undef QT_MOC_LITERAL
 
@@ -55,32 +48,18 @@ static const uint qt_meta_data_SOTAdb[] = {
        8,       // revision
        0,       // classname
        0,    0, // classinfo
-       6,   14, // methods
+       1,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       2,       // signalCount
-
- // signals: name, argc, parameters, tag, flags
-       1,    0,   44,    2, 0x06 /* Public */,
-       3,    0,   45,    2, 0x06 /* Public */,
+       0,       // signalCount
 
  // methods: name, argc, parameters, tag, flags
-       4,    0,   46,    2, 0x02 /* Public */,
-       5,    1,   47,    2, 0x02 /* Public */,
-       7,    0,   50,    2, 0x02 /* Public */,
-       8,    0,   51,    2, 0x02 /* Public */,
-
- // signals: parameters
-    QMetaType::Void,
-    QMetaType::Void,
+       1,    1,   19,    2, 0x02 /* Public */,
 
  // methods: parameters
-    QMetaType::QString,
-    QMetaType::Void, QMetaType::QString,    6,
-    QMetaType::Void,
-    QMetaType::Int,
+    QMetaType::Void, QMetaType::QString,    3,
 
        0        // eod
 };
@@ -91,31 +70,8 @@ void SOTAdb::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
         auto *_t = static_cast<SOTAdb *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->openFailed(); break;
-        case 1: _t->newData(); break;
-        case 2: { QString _r = _t->initDB();
-            if (_a[0]) *reinterpret_cast< QString*>(_a[0]) = std::move(_r); }  break;
-        case 3: _t->createClient((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 4: _t->getClients(); break;
-        case 5: { int _r = _t->getnumclients();
-            if (_a[0]) *reinterpret_cast< int*>(_a[0]) = std::move(_r); }  break;
+        case 0: _t->createClient((*reinterpret_cast< QString(*)>(_a[1]))); break;
         default: ;
-        }
-    } else if (_c == QMetaObject::IndexOfMethod) {
-        int *result = reinterpret_cast<int *>(_a[0]);
-        {
-            using _t = void (SOTAdb::*)();
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&SOTAdb::openFailed)) {
-                *result = 0;
-                return;
-            }
-        }
-        {
-            using _t = void (SOTAdb::*)();
-            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&SOTAdb::newData)) {
-                *result = 1;
-                return;
-            }
         }
     }
 }
@@ -149,27 +105,15 @@ int SOTAdb::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 6)
+        if (_id < 1)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 6;
+        _id -= 1;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 6)
+        if (_id < 1)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 6;
+        _id -= 1;
     }
     return _id;
-}
-
-// SIGNAL 0
-void SOTAdb::openFailed()
-{
-    QMetaObject::activate(this, &staticMetaObject, 0, nullptr);
-}
-
-// SIGNAL 1
-void SOTAdb::newData()
-{
-    QMetaObject::activate(this, &staticMetaObject, 1, nullptr);
 }
 QT_WARNING_POP
 QT_END_MOC_NAMESPACE
